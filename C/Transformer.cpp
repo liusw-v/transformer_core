@@ -8,7 +8,7 @@
 #define P 64
 
 
-//¾ØÕó³Ë·¨    C=A*B  A¾ØÕó¹æÄ£Îªh*hw,B¾ØÕó¹æÄ£Îªhw*W,C¾ØÕó¹æÄ£Îªh*w
+//çŸ©é˜µä¹˜æ³•    C=A*B  AçŸ©é˜µè§„æ¨¡ä¸ºh*hw,BçŸ©é˜µè§„æ¨¡ä¸ºhw*W,CçŸ©é˜µè§„æ¨¡ä¸ºh*w
 void matrixmul(float *A,float *B,float *C,int h,int w,int hw)
 {
 	loop1:
@@ -28,7 +28,7 @@ void matrixmul(float *A,float *B,float *C,int h,int w,int hw)
 	}
 }
 
-//¾ØÕó×ªÖÃ    out=in_T ÊäÈë¾ØÕó¹æÄ£Îªh*w
+//çŸ©é˜µè½¬ç½®    out=in_T è¾“å…¥çŸ©é˜µè§„æ¨¡ä¸ºh*w
 void transpose(float *in,float *out,int h,int w)
 {
 	for (int i=0;i<h;i++)
@@ -40,7 +40,7 @@ void transpose(float *in,float *out,int h,int w)
 	}
 }
 
-//softmaxº¯Êı
+//softmaxå‡½æ•°
 void softmax(float *input,float *res,int h,int w,int Max_i,int Max_j)
 {
 	float probability[h][w];
@@ -74,8 +74,8 @@ void softmax(float *input,float *res,int h,int w,int Max_i,int Max_j)
 	Max_j=max_j;
 }
 
-//×Ô×¢ÒâÁ¦»úÖÆ ÊäÈë¾ØÕóin£¬Í¨¹ıwÎ¬Êı¸Ä±äµÃµ½Q¡¢K¡¢V,ÔÙÍ¨¹ıÒ»ÏµÁĞÔËËãµÃµ½Êä³ö
-//inµÄ¹æÄ££ºin_h*in_w   wµÄ¹æÄ££ºout_h*in_h   outµÄ¹æÄ££ºout_h*in_w
+//è‡ªæ³¨æ„åŠ›æœºåˆ¶ è¾“å…¥çŸ©é˜µinï¼Œé€šè¿‡wç»´æ•°æ”¹å˜å¾—åˆ°Qã€Kã€V,å†é€šè¿‡ä¸€ç³»åˆ—è¿ç®—å¾—åˆ°è¾“å‡º
+//inçš„è§„æ¨¡ï¼šin_h*in_w   wçš„è§„æ¨¡ï¼šout_h*in_h   outçš„è§„æ¨¡ï¼šout_h*in_w
 void selfattention(float *in,float *w_q,float *w_k,float *w_v,float *out,int in_h,int in_w,int out_h)
 {
 	float Q[out_h][in_w];
@@ -95,7 +95,7 @@ void selfattention(float *in,float *w_q,float *w_k,float *w_v,float *out,int in_
 	matrixmul(V[0],SS[0],out,out_h,in_w,in_w);
 }
 
-//Æ´½Ó¾ØÕó ½«°Ë¸ö¾ØÕóÆ´½ÓÔÚÒ»Æğ
+//æ‹¼æ¥çŸ©é˜µ å°†å…«ä¸ªçŸ©é˜µæ‹¼æ¥åœ¨ä¸€èµ·
 void concat(float *x1,float *x2,float *x3,float *x4,float *x5,float *x6,float *x7,float *x8,float *x,int h,int w)
 {
 	for(int i=0;i<h;i++)
@@ -113,7 +113,7 @@ void concat(float *x1,float *x2,float *x3,float *x4,float *x5,float *x6,float *x
 		}
 	}
 }
-//w_o¹æÄ££ºh * 8*w_H   wµÄ¹æÄ££ºw_h*in_h outµÄ¹æÄ££ºh*w
+//w_oè§„æ¨¡ï¼šh * 8*w_H   wçš„è§„æ¨¡ï¼šw_h*in_h outçš„è§„æ¨¡ï¼šh*w
 void multi8head_attention(float *in,float *out,int w,int h,int w_h,
 		float *w_q_1,float *w_k_1,float *w_v_1,
 		float *w_q_2,float *w_k_2,float *w_v_2,
@@ -148,7 +148,7 @@ void multi8head_attention(float *in,float *out,int w,int h,int w_h,
 	matrixmul(w_o,out_0[0],out,h,w,8*w_h);
 }
 
-void vectoradd(float *A,float *B,float *C,int h,int w)//ÓÃÓÚ²Ğ²îÁ¬½Ó
+void vectoradd(float *A,float *B,float *C,int h,int w)//ç”¨äºæ®‹å·®è¿æ¥
 {
 
 	vectoradd:
@@ -187,7 +187,7 @@ void layernorm(float *in,float *out,int h,int w)
 	}
 }
 
-//È«Á¬½Ó²ã  pÎªÖĞ¼ä²ãµÄÎ¬¶È
+//å…¨è¿æ¥å±‚  pä¸ºä¸­é—´å±‚çš„ç»´åº¦
 void MLP(float *A,float *w_1,float *w_2,float *B,int h,int w,int p)
 {
 	float res[p][w];
@@ -195,7 +195,7 @@ void MLP(float *A,float *w_1,float *w_2,float *B,int h,int w,int p)
 	matrixmul(w_2,res[0],B,h,w,p);
 }
 
-//encode²¿·Ö(´Ë´¦ÉèÖÃN=1)
+//encodeéƒ¨åˆ†(æ­¤å¤„è®¾ç½®N=1)
 void encode(float *in,float *out,
 				float *w_q_1,float *w_k_1,float *w_v_1,
 				float *w_q_2,float *w_k_2,float *w_v_2,
@@ -262,7 +262,7 @@ void attention(float *in,float *encode_out,float *w_q,float *w_k,float *w_v,floa
 	softmax(S[0],SS[0],in_w,in_w,max_i,max_j);
 	matrixmul(V[0],SS[0],out,out_h,in_w,in_w);
 }
-//w_o¹æÄ££ºh * 8*w_H   wµÄ¹æÄ££ºw_h*in_h outµÄ¹æÄ££ºh*w
+//w_oè§„æ¨¡ï¼šh * 8*w_H   wçš„è§„æ¨¡ï¼šw_h*in_h outçš„è§„æ¨¡ï¼šh*w
 void decode_multi8head_attention(float *in,float *encode_out,float *out,int w,int h,int w_h,
 		float *w_q_1,float *w_k_1,float *w_v_1,
 		float *w_q_2,float *w_k_2,float *w_v_2,
@@ -297,7 +297,7 @@ void decode_multi8head_attention(float *in,float *encode_out,float *out,int w,in
 	matrixmul(w_o,out_0[0],out,h,w,8*w_h);
 }
 
-//decode²¿·Ö(´Ë´¦ÉèÖÃN=1)
+//decodeéƒ¨åˆ†(æ­¤å¤„è®¾ç½®N=1)
 void decode(float *in,float *encode_out,float *out,
 				float *w_q_1,float *w_k_1,float *w_v_1,
 				float *w_q_2,float *w_k_2,float *w_v_2,
